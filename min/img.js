@@ -2,11 +2,12 @@
 module.exports = function (files) {
     'use strict';
     var Q = require('q'),
-        imagemin = require('imagemin'),
+        Imagemin = require('imagemin'),
         log = require('../utils').log;
 
     function run(file) {
         var df = Q.defer(),
+            imagemin = new Imagemin(),
             originalSize = file.contents.length;
 
         imagemin.src(file.contents).run(function (e, files) {
