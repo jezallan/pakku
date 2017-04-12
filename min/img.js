@@ -2,7 +2,7 @@
 module.exports = function (files) {
     'use strict';
     var Q = require('q'),
-        magemin = require('imagemin'),
+        imagemin = require('imagemin'),
         log = require('../utils').log;
 
     function run(file) {
