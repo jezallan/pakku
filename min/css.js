@@ -4,7 +4,7 @@ module.exports = function (files) {
     var Q = require('q'),
         less = require('less'),
         autoprefixer = require('autoprefixer')({
-            browsers: ['> 0.25%, IE 10, IE 11']
+            browsers: ['last 2 versions', 'safari >= 8', 'ie >= 11']
         }),
         flexfix = require('postcss-flexbugs-fixes'),
         postcss = require('postcss'),
