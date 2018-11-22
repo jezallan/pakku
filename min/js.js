@@ -87,7 +87,6 @@ module.exports = function (files) {
   }
 
   function run(file) {
-    console.log('--------', file.name)
 
     function formatError(e) {
       e.filename = file.name;
