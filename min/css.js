@@ -12,7 +12,6 @@ module.exports = function (files) {
 
     const postcssOptions = {
       from: undefined,
-      to: undefined,
     }
 
     function autoprefix(file) {

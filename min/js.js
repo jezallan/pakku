@@ -1,4 +1,3 @@
-/*eslint indent:4*/
 module.exports = function (files) {
   'use strict';
   var fs = require('fs'),
@@ -7,7 +6,6 @@ module.exports = function (files) {
     browserify = require('browserify'),
     babel      = require('@babel/core'),
     babelTransform = require('babelify'),
-    presetEnv     = require('@babel/preset-env'),
     terserjs =  require('terser'),
     regenerator = require('regenerator'),
     log = require('../utils').log;
@@ -26,13 +24,13 @@ module.exports = function (files) {
   }
   function terser(file) {
     var options = {
-      fromString: true,
       output: { inline_script: true, beautify: false }
     };
 
     return new Promise((resolve, reject) => {
       try {
-        file.contents = terserjs.minify(file.contents, options).code;
+        const result = terserjs.minify(file.contents, options);
+        file.contents = result.code;
         resolve(file);
       } catch (e) {
         reject(e);
@@ -52,7 +50,7 @@ module.exports = function (files) {
         .transform(regenerator)
         .transform(babelTransform, {
           filename: file.name,
-          presets: [presetEnv]
+          presets: ["@babel/preset-env"]
         })
         .bundle(function (error, buffer) {
           if (error) { return reject(error); }
@@ -64,11 +62,10 @@ module.exports = function (files) {
   function babelify(file) {
     return new Promise((resolve, reject) => {
       try {
-        file.contents = babel
-          .transform(file.contents, {
-            filename: file.name,
-            presets: [presetEnv]
-          }).code;
+        file.contents = babel.transform(file.contents, {
+          filename: file.name,
+          presets: ["@babel/preset-env"]
+        }).code;
         resolve(file);
       } catch (e) {
         reject(e);
