@@ -5,10 +5,10 @@ module.exports = function (files) {
     vm = require('vm'),
     Q = require('q'),
     browserify = require('browserify'),
-    babel      = require('babel-core'),
+    babel      = require('@babel/core'),
     babelTransform = require('babelify'),
-    es2015     = require('babel-preset-es2015'),
-    uglifyjs =  require('uglify-js'),
+    presetEnv     = require('@babel/preset-env'),
+    terserjs =  require('terser'),
     regenerator = require('regenerator'),
     log = require('../utils').log;
 
@@ -24,7 +24,7 @@ module.exports = function (files) {
       }
     });
   }
-  function uglify(file) {
+  function terser(file) {
     var options = {
       fromString: true,
       output: { inline_script: true, beautify: false }
@@ -32,7 +32,7 @@ module.exports = function (files) {
 
     return new Promise((resolve, reject) => {
       try {
-        file.contents = uglifyjs.minify(file.contents, options).code;
+        file.contents = terserjs.minify(file.contents, options).code;
         resolve(file);
       } catch (e) {
         reject(e);
@@ -52,7 +52,7 @@ module.exports = function (files) {
         .transform(regenerator)
         .transform(babelTransform, {
           filename: file.name,
-          presets: [es2015]
+          presets: [presetEnv]
         })
         .bundle(function (error, buffer) {
           if (error) { return reject(error); }
@@ -67,7 +67,7 @@ module.exports = function (files) {
         file.contents = babel
           .transform(file.contents, {
             filename: file.name,
-            presets: [es2015]
+            presets: [presetEnv]
           }).code;
         resolve(file);
       } catch (e) {
@@ -116,7 +116,7 @@ module.exports = function (files) {
       return regenerate(file)
         .then(brwsrfy)
         .then(babelify)
-        .then(uglify)
+        .then(terser)
         .catch(formatError);
     } else if (file.name.match(/\.(json|ld\+json)$/)) {
       return minifyJSON(file, formatError);

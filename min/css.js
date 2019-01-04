@@ -10,9 +10,14 @@ module.exports = function (files) {
         postcss = require('postcss'),
         CleanCSS = require('clean-css');
 
+    const postcssOptions = {
+      from: undefined,
+      to: undefined,
+    }
+
     function autoprefix(file) {
         return new Promise((resolve, reject) => {
-            postcss([flexfix, autoprefixer]).process(file.contents)
+            postcss([flexfix, autoprefixer]).process(file.contents, postcssOptions)
             .then(function (output) {
                 file.contents = output.css;
                 resolve(file);
