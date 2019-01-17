@@ -99,10 +99,7 @@ module.exports = function (files) {
       /scripts/,
       /lib\/new/,
       /lib\/react/,
-      /vendor.js/,
-      /vendor.bundle.js/,
-      /vendor_ic.js/,
-      /vendor_ic.bundle.js/,
+      /vendor/,
       /webpack.config.js/
     ]
 
